@@ -1,4 +1,4 @@
-package com.caesar84mx.swensonforecast.app
+package com.caesar84mx.swensonforecast.util.providers
 
 import com.caesar84mx.swensonforecast.data.model.common.Event
 import kotlinx.coroutines.flow.MutableSharedFlow

@@ -1,7 +1,7 @@
 package com.caesar84mx.swensonforecast.di
 
 import com.caesar84mx.swensonforecast.BuildConfig
-import com.caesar84mx.swensonforecast.app.GlobalEventsProvider
+import com.caesar84mx.swensonforecast.util.providers.GlobalEventsProvider
 import com.caesar84mx.swensonforecast.data.networking.adapters.LocalDateAdapter
 import com.caesar84mx.swensonforecast.util.providers.DefaultLocationProvider
 import com.caesar84mx.swensonforecast.data.networking.adapters.LocalDateTimeAdapter

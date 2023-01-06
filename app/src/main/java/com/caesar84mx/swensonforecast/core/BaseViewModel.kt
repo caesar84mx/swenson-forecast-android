@@ -2,10 +2,9 @@ package com.caesar84mx.swensonforecast.core
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.caesar84mx.swensonforecast.app.GlobalEventsProvider
+import com.caesar84mx.swensonforecast.util.providers.GlobalEventsProvider
 import com.caesar84mx.swensonforecast.data.model.common.Event
 import com.caesar84mx.swensonforecast.data.model.common.UIStatus
-import com.caesar84mx.swensonforecast.data.model.common.UIStatus.Idle
 import com.caesar84mx.swensonforecast.data.model.common.UIStatus.Loading
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

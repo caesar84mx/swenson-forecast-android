@@ -5,13 +5,12 @@ import android.icu.util.LocaleData.MeasurementSystem
 import android.icu.util.ULocale
 import androidx.lifecycle.viewModelScope
 import com.caesar84mx.swensonforecast.R
-import com.caesar84mx.swensonforecast.app.GlobalEventsProvider
+import com.caesar84mx.swensonforecast.util.providers.GlobalEventsProvider
 import com.caesar84mx.swensonforecast.core.BaseViewModel
 import com.caesar84mx.swensonforecast.data.model.common.QuitApp
 import com.caesar84mx.swensonforecast.data.model.common.UIStatus
 import com.caesar84mx.swensonforecast.data.model.common.UIStatus.Loading
 import com.caesar84mx.swensonforecast.data.model.common.UIStatus.Success
-import com.caesar84mx.swensonforecast.data.model.forecast.CurrentForecast
 import com.caesar84mx.swensonforecast.data.model.forecast.Day
 import com.caesar84mx.swensonforecast.data.model.forecast.DaysForecast
 import com.caesar84mx.swensonforecast.data.model.forecast.ForecastDay
@@ -30,7 +29,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach

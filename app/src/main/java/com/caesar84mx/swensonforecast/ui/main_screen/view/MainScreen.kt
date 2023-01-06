@@ -43,7 +43,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.caesar84mx.swensonforecast.R
-import com.caesar84mx.swensonforecast.app.GlobalEventsProvider
+import com.caesar84mx.swensonforecast.util.providers.GlobalEventsProvider
 import com.caesar84mx.swensonforecast.data.model.common.UIStatus.Error
 import com.caesar84mx.swensonforecast.data.model.common.UIStatus.Idle
 import com.caesar84mx.swensonforecast.data.model.common.UIStatus.Loading

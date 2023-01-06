@@ -10,6 +10,7 @@ import com.caesar84mx.swensonforecast.R
 import com.caesar84mx.swensonforecast.data.model.common.QuitApp
 import com.caesar84mx.swensonforecast.ui.main_screen.view.MainScreen
 import com.caesar84mx.swensonforecast.ui.theme.SwensonForecastTheme
+import com.caesar84mx.swensonforecast.util.providers.GlobalEventsProvider
 import com.permissionx.guolindev.PermissionX
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
