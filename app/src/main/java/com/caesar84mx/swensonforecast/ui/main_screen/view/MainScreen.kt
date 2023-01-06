@@ -282,9 +282,10 @@ private fun Body(viewModel: MainScreenViewModel) {
                     }
                 }
                 is Error -> {
+                    val status = status as Error
                     AlertDialog(
                         title = { Text(text = stringResource(R.string.error_title)) },
-                        text = { Text(text = (status as Error).message) },
+                        text = { Text(text = status.message) },
                         buttons = {
                             Row(
                                 horizontalArrangement = Arrangement.Center,

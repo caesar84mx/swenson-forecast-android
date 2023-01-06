@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.caesar84mx.swensonforecast.util.providers.GlobalEventsProvider
 import com.caesar84mx.swensonforecast.data.model.common.Event
 import com.caesar84mx.swensonforecast.data.model.common.UIStatus
+import com.caesar84mx.swensonforecast.data.model.common.UIStatus.Idle
 import com.caesar84mx.swensonforecast.data.model.common.UIStatus.Loading
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -27,7 +28,7 @@ abstract class BaseViewModel<D>(private val globalEventsProvider: GlobalEventsPr
     }
 
     open fun onErrorMessageClose() {
-
+        updateStatus(Idle)
     }
 
     open fun onBackPressed() { }
