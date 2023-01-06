@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Swenson Forecast</string>
+    <string name="ic_description_search">search</string>
+    <string name="day_description_format">It\'s a %s day</string>
+    <string name="mph_format">%.1f mph</string>
+    <string name="kph_format">%.1f kph</string>
+    <string name="f_format">%.1f°F</string>
+    <string name="c_format">%.1f°C</string>
+    <string name="humidity_format">%d%%</string>
+    <string name="generic_error_message">An error occurred, please, try again later</string>
+    <string name="btn_ok">OK</string>
+    <string name="error_title">Error</string>
+</resources>
