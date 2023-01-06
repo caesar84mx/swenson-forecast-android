@@ -19,7 +19,7 @@ class ForecastRepository(private val service: ForecastService) {
     fun fetchLocations(query: String) = flow {
         val locations = service.fetchLocations(query = query)
         emit(locations)
-    }.flowOn(Dispatchers.Main)
+    }.flowOn(Dispatchers.IO)
 
     companion object {
         val mock = ForecastRepository(
