@@ -123,7 +123,7 @@ private fun Body(viewModel: MainScreenViewModel) {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center,
                 modifier = Modifier
-                    .height(104.dp),
+                    .height(90.dp),
             ) {
                 Spacer(Modifier.weight(1.5f))
 
