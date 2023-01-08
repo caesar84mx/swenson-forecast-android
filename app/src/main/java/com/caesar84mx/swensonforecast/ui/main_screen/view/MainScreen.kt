@@ -138,7 +138,7 @@ private fun Body(viewModel: MainScreenViewModel) {
                     }
                 }
                 is Success<*> -> {
-                    val forecast = (status as Success<DaysForecastUI>).data
+                    val forecast = (status as Success<*>).data as DaysForecastUI
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.Center,
