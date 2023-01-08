@@ -16,9 +16,11 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.systemGesturesPadding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -145,112 +147,106 @@ private fun Body(viewModel: MainScreenViewModel) {
                     Row(
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier
+                            .navigationBarsPadding()
+                            .fillMaxSize()
                     ) {
                         CircularProgressIndicator(color = Color.White)
                     }
                 }
                 is Success<*> -> {
                     val forecast = (status as Success<*>).data as DaysForecastUI
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center,
+
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center,
                         modifier = Modifier
                             .padding(bottom = 101.dp)
                             .fillMaxWidth()
                     ) {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Text(
-                                text = forecast.current.location,
-                                style = MaterialTheme.typography.h4,
-                                color = MaterialTheme.colors.onBackground,
-                                textAlign = TextAlign.Center
-                            )
+                        Text(
+                            text = forecast.current.location,
+                            style = MaterialTheme.typography.h4,
+                            color = MaterialTheme.colors.onBackground,
+                            textAlign = TextAlign.Center
+                        )
 
-                            Text(
-                                text = forecast.current.date,
-                                style = MaterialTheme.typography.body2,
-                                color = MaterialTheme.colors.onBackground,
-                                textAlign = TextAlign.Center
-                            )
-                        }
+                        Text(
+                            text = forecast.current.date,
+                            style = MaterialTheme.typography.body2,
+                            color = MaterialTheme.colors.onBackground,
+                            textAlign = TextAlign.Center
+                        )
                     }
 
-                    Row(
-                        horizontalArrangement = Arrangement.Center,
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier
                             .padding(horizontal = 80.dp)
                             .fillMaxWidth()
                     ) {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            modifier = Modifier.fillMaxWidth()
+                        AsyncImage(
+                            model = ImageRequest.Builder(LocalContext.current)
+                                .data(forecast.current.iconUrl)
+                                .crossfade(true)
+                                .build(),
+                            contentScale = ContentScale.Crop,
+                            contentDescription = forecast.current.description,
+                            modifier = Modifier
+                                .size(70.dp)
+                                .scale(2f)
+                        )
+
+                        Text(
+                            text = buildTemperatureString(forecast.current.temperature),
+                            style = MaterialTheme.typography.h2,
+                            color = MaterialTheme.colors.onBackground,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.padding(
+                                top = 23.dp,
+                                bottom = 18.dp
+                            )
+                        )
+
+                        Text(
+                            text = forecast.current.description,
+                            style = MaterialTheme.typography.body2,
+                            color = MaterialTheme.colors.onBackground,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.padding(bottom = 21.dp)
+                        )
+
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .padding(start = 9.dp)
+                                .fillMaxWidth()
                         ) {
-                            AsyncImage(
-                                model = ImageRequest.Builder(LocalContext.current)
-                                    .data(forecast.current.iconUrl)
-                                    .crossfade(true)
-                                    .build(),
-                                contentScale = ContentScale.Crop,
-                                contentDescription = forecast.current.description,
-                                modifier = Modifier
-                                    .size(70.dp)
-                                    .scale(2f)
+                            Image(
+                                painter = painterResource(id = R.drawable.ic_wind),
+                                contentDescription = null
                             )
 
                             Text(
-                                text = buildTemperatureString(forecast.current.temperature),
-                                style = MaterialTheme.typography.h2,
+                                text = forecast.current.windSpeed,
+                                style = MaterialTheme.typography.caption,
                                 color = MaterialTheme.colors.onBackground,
-                                textAlign = TextAlign.Center,
-                                modifier = Modifier.padding(
-                                    top = 23.dp,
-                                    bottom = 18.dp
-                                )
+                                modifier = Modifier.padding(start = 9.dp)
+                            )
+
+                            Spacer(modifier = Modifier.weight(1f))
+
+                            Image(
+                                painter = painterResource(id = R.drawable.ic_droplet),
+                                contentDescription = null
                             )
 
                             Text(
-                                text = forecast.current.description,
-                                style = MaterialTheme.typography.body2,
+                                text = forecast.current.humidity,
+                                style = MaterialTheme.typography.caption,
                                 color = MaterialTheme.colors.onBackground,
-                                textAlign = TextAlign.Center,
-                                modifier = Modifier.padding(bottom = 21.dp)
+                                modifier = Modifier.padding(start = 9.dp)
                             )
-
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier
-                                    .padding(start = 9.dp)
-                                    .fillMaxWidth()
-                            ) {
-                                Image(
-                                    painter = painterResource(id = R.drawable.ic_wind),
-                                    contentDescription = null
-                                )
-
-                                Text(
-                                    text = forecast.current.windSpeed,
-                                    style = MaterialTheme.typography.caption,
-                                    color = MaterialTheme.colors.onBackground,
-                                    modifier = Modifier.padding(start = 9.dp)
-                                )
-
-                                Spacer(modifier = Modifier.weight(1f))
-
-                                Image(
-                                    painter = painterResource(id = R.drawable.ic_droplet),
-                                    contentDescription = null
-                                )
-
-                                Text(
-                                    text = forecast.current.humidity,
-                                    style = MaterialTheme.typography.caption,
-                                    color = MaterialTheme.colors.onBackground,
-                                    modifier = Modifier.padding(start = 9.dp)
-                                )
-                            }
                         }
                     }
 

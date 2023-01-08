@@ -181,10 +181,7 @@ fun SearchTopSheet(
                         .fillMaxWidth()
                         .swipeable(
                             state = rememberSwipeableState(0) {
-                                if (it == 1) {
-                                    onBackPressed()
-                                }
-
+                                if (it == 1) { onBackPressed() }
                                 true
                             },
                             anchors = anchors,
