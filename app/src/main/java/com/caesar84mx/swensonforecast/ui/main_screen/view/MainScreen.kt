@@ -36,13 +36,18 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.font.FontWeight.Companion
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.caesar84mx.swensonforecast.R
+import com.caesar84mx.swensonforecast.R.string
 import com.caesar84mx.swensonforecast.util.providers.GlobalEventsProvider
 import com.caesar84mx.swensonforecast.data.model.common.UIStatus.Error
 import com.caesar84mx.swensonforecast.data.model.common.UIStatus.Idle
@@ -55,7 +60,9 @@ import com.caesar84mx.swensonforecast.ui.components.SearchTopSheet
 import com.caesar84mx.swensonforecast.ui.components.SlideAnimatedView
 import com.caesar84mx.swensonforecast.ui.main_screen.data.DaysForecastUI
 import com.caesar84mx.swensonforecast.ui.main_screen.viewmodel.MainScreenViewModel
+import com.caesar84mx.swensonforecast.ui.theme.Overlay
 import com.caesar84mx.swensonforecast.ui.theme.SwensonForecastTheme
+import com.caesar84mx.swensonforecast.util.get
 import com.caesar84mx.swensonforecast.util.providers.LocationProvider
 import com.caesar84mx.swensonforecast.util.providers.ResourceProvider
 import org.koin.androidx.compose.getViewModel
@@ -93,7 +100,7 @@ private fun Body(viewModel: MainScreenViewModel) {
 
         Box(
             modifier = Modifier
-                .background(Color(0xD4002762))
+                .background(Overlay)
                 .windowInsetsPadding(WindowInsets(0.dp))
                 .fillMaxSize()
         )
@@ -101,7 +108,7 @@ private fun Body(viewModel: MainScreenViewModel) {
         Column(
             modifier = Modifier
                 .statusBarsPadding()
-                .padding(horizontal = 32.dp)
+                .padding(horizontal = 25.dp)
                 .fillMaxSize()
         ) {
             Row(
@@ -188,7 +195,7 @@ private fun Body(viewModel: MainScreenViewModel) {
                             )
 
                             Text(
-                                text = forecast.current.temperature,
+                                text = buildTemperatureString(forecast.current.temperature),
                                 style = MaterialTheme.typography.h2,
                                 color = MaterialTheme.colors.onBackground,
                                 textAlign = TextAlign.Center,
@@ -309,7 +316,7 @@ private fun Body(viewModel: MainScreenViewModel) {
         SlideAnimatedView(targetState = showSearch) { isShown ->
             if (isShown) {
                 SearchTopSheet(
-                    label = "Search City",
+                    label = stringResource(string.search_city_hint),
                     searchQuery = citySearchQuery,
                     onSearchQueryChanged = viewModel::onCityQueryChanged,
                     options = locations,
@@ -319,6 +326,18 @@ private fun Body(viewModel: MainScreenViewModel) {
                 )
             }
         }
+    }
+}
+
+private fun buildTemperatureString(fullString: String) = buildAnnotatedString {
+    val unitStart = fullString.length - 2
+    val unitEnd = fullString.length
+    val temperature = fullString[0, unitStart]
+    val tempUnit = fullString[unitStart, unitEnd]
+
+    append(temperature)
+    withStyle(style = SpanStyle(fontWeight = FontWeight.W100)) {
+        append(tempUnit)
     }
 }
 

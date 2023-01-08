@@ -32,3 +32,5 @@ fun LocalDate.toRelativeDay(): String {
 
     return atStartOfDay().formatted("EEEE")
 }
+
+operator fun String.get(start: Int, end: Int): String = substring(start, endIndex = end)

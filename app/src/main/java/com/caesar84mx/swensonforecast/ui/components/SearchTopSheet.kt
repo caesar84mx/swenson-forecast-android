@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -18,19 +19,14 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.DismissDirection
-import androidx.compose.material.DismissValue
-import androidx.compose.material.DismissValue.DismissedToStart
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.FractionalThreshold
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Surface
-import androidx.compose.material.SwipeToDismiss
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
-import androidx.compose.material.rememberDismissState
 import androidx.compose.material.rememberSwipeableState
 import androidx.compose.material.swipeable
 import androidx.compose.runtime.Composable
@@ -44,12 +40,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.font.FontWeight.Companion
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.caesar84mx.swensonforecast.R
-import com.caesar84mx.swensonforecast.R.drawable
 import com.caesar84mx.swensonforecast.ui.main_screen.data.LocationUI
 import com.caesar84mx.swensonforecast.ui.theme.Accent
 import com.caesar84mx.swensonforecast.ui.theme.HintColor
@@ -93,11 +93,17 @@ fun SearchTopSheet(
                         .padding(vertical = 27.dp)
                         .fillMaxWidth()
                 ) {
-                    IconButton(onClick = onBackPressed) {
+                    IconButton(
+                        onClick = {
+                            focusManager.clearFocus()
+                            onBackPressed()
+                        }
+                    ) {
                         Icon(
-                            painter = painterResource(id = drawable.ic_arrow_back),
+                            painter = painterResource(id = R.drawable.ic_arrow_back),
                             contentDescription = "back",
-                            tint = OnSurface
+                            tint = OnSurface,
+                            modifier = Modifier.offset(x = (-10).dp)
                         )
                     }
 
@@ -119,7 +125,7 @@ fun SearchTopSheet(
                         trailingIcon = {
                             IconButton(onClick = onErasePressed) {
                                 Icon(
-                                    painter = painterResource(id = drawable.ic_close),
+                                    painter = painterResource(id = R.drawable.ic_close),
                                     contentDescription = "close",
                                     tint = OnSurface
                                 )
@@ -151,9 +157,8 @@ fun SearchTopSheet(
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.Start
                             ) {
-
                                 Text(
-                                    text = "${option.city} - ${option.state}",
+                                    text = buildOptionString(option),
                                     modifier = Modifier.padding(vertical = 12.dp)
                                 )
                             }
@@ -163,8 +168,6 @@ fun SearchTopSheet(
             }
 
             if (options.isNotEmpty()) {
-
-
                 val bottomSize = 38.dp
                 val sizePx = with(LocalDensity.current) { -(bottomSize).toPx() }
                 val anchors = mapOf(0f to 0, sizePx to 1)
@@ -197,6 +200,16 @@ fun SearchTopSheet(
                 }
             }
         }
+    }
+}
+
+private fun buildOptionString(option: LocationUI) = buildAnnotatedString {
+    withStyle(style = SpanStyle(fontWeight = FontWeight.W700)) {
+        append(option.city)
+    }
+
+    withStyle(style = SpanStyle(fontWeight = FontWeight.W500)) {
+        append(" - ${option.state}")
     }
 }
 
