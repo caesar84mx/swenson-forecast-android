@@ -5,6 +5,8 @@ package com.caesar84mx.swensonforecast.ui.main_screen.view
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.Orientation.Horizontal
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,6 +20,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.IconButton
@@ -251,7 +256,7 @@ private fun Body(viewModel: MainScreenViewModel) {
 
                     Spacer(modifier = Modifier.weight(1f))
 
-                    Row(
+                    LazyRow(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.Top,
                         modifier = Modifier
@@ -259,10 +264,10 @@ private fun Body(viewModel: MainScreenViewModel) {
                             .fillMaxWidth()
                             .height(190.dp)
                     ) {
-                        forecast.forecast.forEach { daily ->
+                        items(forecast.forecast) { daily ->
                             Column(
                                 horizontalAlignment = Alignment.CenterHorizontally,
-                                modifier = Modifier.padding()
+                                modifier = Modifier.padding(horizontal = 2.dp)
                             ) {
                                 AsyncImage(
                                     model = ImageRequest.Builder(LocalContext.current)
