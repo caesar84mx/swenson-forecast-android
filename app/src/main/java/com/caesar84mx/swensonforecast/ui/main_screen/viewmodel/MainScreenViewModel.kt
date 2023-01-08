@@ -42,9 +42,9 @@ class MainScreenViewModel(
 ) : BaseViewModel<DaysForecastUI>(globalEventsProvider) {
     private val _showSearch = MutableStateFlow(false)
     private val _locations = MutableStateFlow<List<LocationUI>>(listOf())
-    private val _query = MutableStateFlow("")
+    private val _forecastQuery = MutableStateFlow("")
 
-    private var locationQuery: String = ""
+    private var locationsQuery: String = ""
 
     val citySearchQuery = MutableStateFlow("")
 
@@ -55,7 +55,7 @@ class MainScreenViewModel(
         get() = _locations
 
     init {
-        _query.onEach { query ->
+        _forecastQuery.onEach { query ->
             if (query.isNotEmpty()) {
                 fetchForecast(query)
             }
@@ -64,9 +64,9 @@ class MainScreenViewModel(
         locationProvider.currentLocation
             .onEach { location ->
                 location?.let {
-                    locationQuery = "${it.latitude},${it.longitude}"
-                    if (_query.value.isEmpty()) {
-                        _query.emit(locationQuery)
+                    locationsQuery = "${it.latitude},${it.longitude}"
+                    if (_forecastQuery.value.isEmpty()) {
+                        _forecastQuery.emit(locationsQuery)
                     }
                 }
             }
@@ -98,7 +98,7 @@ class MainScreenViewModel(
         citySearchQuery.value = newValue
 
         if (citySearchQuery.value.isEmpty()) {
-            _query.value = locationQuery
+            _forecastQuery.value = locationsQuery
         } else {
             fetchLocations(newValue)
         }
@@ -107,7 +107,7 @@ class MainScreenViewModel(
     fun onLocationPressed(location: LocationUI) {
         viewModelScope.launch {
             citySearchQuery.value = "${location.city} - ${location.state}"
-            _query.value = location.city
+            _forecastQuery.value = location.city
             _locations.emit(listOf(location))
         }
     }
