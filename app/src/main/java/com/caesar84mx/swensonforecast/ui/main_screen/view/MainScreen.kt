@@ -73,7 +73,8 @@ fun MainScreen() {
 
     LifecycleDisposableObserver(
         lifecycleOwner = LocalLifecycleOwner.current,
-        onBackPressed = viewModel::onBackPressed
+        onBackPressed = viewModel::onBackPressed,
+        onCreate = { viewModel.listenLocations() }
     )
 
     Body(viewModel = viewModel)

@@ -55,10 +55,6 @@ class MainScreenViewModel(
         get() = _locations
 
     init {
-        locationProvider.listenLocations()
-            .flowOn(Dispatchers.Main)
-            .launchIn(viewModelScope)
-
         _query.onEach { query ->
             if (query.isNotEmpty()) {
                 fetchForecast(query)
@@ -75,6 +71,12 @@ class MainScreenViewModel(
                 }
             }
             .catch { error -> handleError(error) }
+            .launchIn(viewModelScope)
+    }
+
+    fun listenLocations() {
+        locationProvider.listenLocations()
+            .flowOn(Dispatchers.Main)
             .launchIn(viewModelScope)
     }
 
