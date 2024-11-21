@@ -121,7 +121,7 @@ private fun Body(viewModel: MainScreenViewModel) {
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = null,
-                    onClick =  { if (showSearch) viewModel.onBackPressed() }
+                    onClick =  { viewModel.onSearchDismiss() }
                 )
                 .statusBarsPadding()
                 .padding(horizontal = 25.dp)
