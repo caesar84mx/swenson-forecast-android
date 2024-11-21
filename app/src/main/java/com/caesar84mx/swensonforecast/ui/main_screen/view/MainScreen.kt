@@ -2,11 +2,17 @@
 
 package com.caesar84mx.swensonforecast.ui.main_screen.view
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.Orientation.Horizontal
-import androidx.compose.foundation.gestures.scrollable
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.indication
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,11 +26,9 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.systemGesturesPadding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.IconButton
@@ -34,6 +38,7 @@ import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
@@ -46,7 +51,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.font.FontWeight.Companion
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
@@ -55,7 +59,6 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.caesar84mx.swensonforecast.R
 import com.caesar84mx.swensonforecast.R.string
-import com.caesar84mx.swensonforecast.util.providers.GlobalEventsProvider
 import com.caesar84mx.swensonforecast.data.model.common.UIStatus.Error
 import com.caesar84mx.swensonforecast.data.model.common.UIStatus.Idle
 import com.caesar84mx.swensonforecast.data.model.common.UIStatus.Loading
@@ -64,12 +67,12 @@ import com.caesar84mx.swensonforecast.data.networking.repository.ForecastReposit
 import com.caesar84mx.swensonforecast.ui.components.ClockView
 import com.caesar84mx.swensonforecast.ui.components.LifecycleDisposableObserver
 import com.caesar84mx.swensonforecast.ui.components.SearchTopSheet
-import com.caesar84mx.swensonforecast.ui.components.SlideAnimatedView
 import com.caesar84mx.swensonforecast.ui.main_screen.data.DaysForecastUI
 import com.caesar84mx.swensonforecast.ui.main_screen.viewmodel.MainScreenViewModel
 import com.caesar84mx.swensonforecast.ui.theme.Overlay
 import com.caesar84mx.swensonforecast.ui.theme.SwensonForecastTheme
 import com.caesar84mx.swensonforecast.util.get
+import com.caesar84mx.swensonforecast.util.providers.GlobalEventsProvider
 import com.caesar84mx.swensonforecast.util.providers.LocationProvider
 import com.caesar84mx.swensonforecast.util.providers.ResourceProvider
 import org.koin.androidx.compose.getViewModel
@@ -115,6 +118,11 @@ private fun Body(viewModel: MainScreenViewModel) {
 
         Column(
             modifier = Modifier
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null,
+                    onClick =  { if (showSearch) viewModel.onBackPressed() }
+                )
                 .statusBarsPadding()
                 .padding(horizontal = 25.dp)
                 .fillMaxSize()
@@ -315,18 +323,20 @@ private fun Body(viewModel: MainScreenViewModel) {
             }
         }
 
-        SlideAnimatedView(targetState = showSearch) { isShown ->
-            if (isShown) {
-                SearchTopSheet(
-                    label = stringResource(string.search_city_hint),
-                    searchQuery = citySearchQuery,
-                    onSearchQueryChanged = viewModel::onCityQueryChanged,
-                    options = locations,
-                    onOptionPressed = viewModel::onLocationPressed,
-                    onErasePressed = viewModel::onErasePressed,
-                    onBackPressed = viewModel::onSearchDismiss
-                )
-            }
+        AnimatedVisibility(
+            visible = showSearch,
+            enter = fadeIn() + expandVertically(),
+            exit = fadeOut() + shrinkVertically(),
+        ) {
+            SearchTopSheet(
+                label = stringResource(string.search_city_hint),
+                searchQuery = citySearchQuery,
+                onSearchQueryChanged = viewModel::onCityQueryChanged,
+                options = locations,
+                onOptionPressed = viewModel::onLocationPressed,
+                onErasePressed = viewModel::onErasePressed,
+                onBackPressed = viewModel::onSearchDismiss
+            )
         }
     }
 }
